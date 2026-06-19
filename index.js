@@ -5,11 +5,7 @@ import dotenv from "dotenv";
 
 // routes
 import authRoutes from "./routes/auth.js";
-import lessonRoutes from "./routes/lessons.js";
-import favoriteRoutes from "./routes/favorites.js";
-import commentRoutes from "./routes/comments.js";
-import reportRoutes from "./routes/reports.js";
-import adminRoutes from "./routes/admin.js";
+
 
 dotenv.config();
 
@@ -46,11 +42,7 @@ mongoose
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/auth", authRoutes);
-app.use("/lessons", lessonRoutes);
-app.use("/favorites", favoriteRoutes);
-app.use("/comments", commentRoutes);
-app.use("/reports", reportRoutes);
-app.use("/admin", adminRoutes);
+
 
 // Health check — Render pings this to keep the server alive
 app.get("/", (req, res) => {
