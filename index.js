@@ -8,8 +8,7 @@ import authRoutes from "./routes/auth.js";
 import lessonRoutes from "./routes/lessons.js";
 import favoriteRoutes from "./routes/favorites.js";
 import commentRoutes from "./routes/comments.js";
-
-
+import reportRoutes from "./routes/reports.js";
 
 
 dotenv.config();
@@ -50,8 +49,7 @@ app.use("/auth", authRoutes);
 app.use("/lessons", lessonRoutes);
 app.use("/favorites", favoriteRoutes);
 app.use("/comments", commentRoutes);
-
-
+app.use("/reports", reportRoutes);
 
 
 // Health check — Render pings this to keep the server alive
