@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 // routes
 import authRoutes from "./routes/auth.js";
+import lessonRoutes from "./routes/lessons.js";
 
 
 dotenv.config();
@@ -42,6 +43,7 @@ mongoose
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/auth", authRoutes);
+app.use("/lessons", lessonRoutes);
 
 
 // Health check — Render pings this to keep the server alive
