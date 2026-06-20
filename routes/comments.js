@@ -4,8 +4,8 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// ─── Post a comment ───────────────────────────────────────────────────────────
-// POST /comments
+// Post a comment -----
+// post /comments
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { lessonId, text } = req.body;
@@ -29,8 +29,8 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Get comments for a lesson ────────────────────────────────────────────────
-// GET /comments/:lessonId
+// Get comment for a lesson -----
+// get /comments/:lessonId
 router.get("/:lessonId", async (req, res) => {
   try {
     const comments = await Comment.find({ lessonId: req.params.lessonId }).sort({
@@ -43,8 +43,8 @@ router.get("/:lessonId", async (req, res) => {
   }
 });
 
-// ─── Delete a comment (owner or admin) ───────────────────────────────────────
-// DELETE /comments/:commentId
+// Delete a comment (owner or admin) -----
+// delete /comments/:commentId
 router.delete("/:commentId", verifyToken, async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.commentId);

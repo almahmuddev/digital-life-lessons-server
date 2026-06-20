@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -16,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      // not required — Google OAuth users won't have a password
+      // Google OAuth users won't have a password
     },
     photoURL: {
       type: String,

@@ -98,7 +98,7 @@ app.use("/reports", reportRoutes);
 app.use("/admin", adminRoutes);
 app.use("/payments", paymentRoutes);
 
-// Render pings this to keep the server alive -----
+// Render to keep the server alive -----
 app.get("/", (req, res) => {
   res.json({ message: "Digital Life Lessons API is running ✅" });
 });

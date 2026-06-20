@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const favoriteSchema = new mongoose.Schema(
@@ -22,7 +23,7 @@ const favoriteSchema = new mongoose.Schema(
   }
 );
 
-// prevent duplicate saves — one user can only save a lesson once
+// one user can only save a lesson once
 favoriteSchema.index({ userId: 1, lessonId: 1 }, { unique: true });
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);

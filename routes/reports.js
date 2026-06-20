@@ -1,3 +1,4 @@
+
 import express from "express";
 import LessonReport from "../models/LessonReport.js";
 import Lesson from "../models/Lesson.js";
@@ -5,8 +6,8 @@ import { verifyToken, verifyAdmin } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// ─── Report a lesson ──────────────────────────────────────────────────────────
-// POST /reports
+// Report a lesson --
+// post /reports
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { lessonId, reason } = req.body;
@@ -33,8 +34,8 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Get all reported lessons grouped by lessonId (admin only) ───────────────
-// GET /reports
+// Get all reported lessons grouped by lessonId (admin only) ---
+// get /reports
 router.get("/", verifyToken, verifyAdmin, async (req, res) => {
   try {
     const reports = await LessonReport.aggregate([
@@ -62,8 +63,8 @@ router.get("/", verifyToken, verifyAdmin, async (req, res) => {
   }
 });
 
-// ─── Ignore reports for a lesson (admin only) — clears all reports ────────────
-// DELETE /reports/ignore/:lessonId
+// Ignore reports (admin) for a lesson  — clears all reports ------
+// delete /reports/ignore/:lessonId
 router.delete("/ignore/:lessonId", verifyToken, verifyAdmin, async (req, res) => {
   try {
     await LessonReport.deleteMany({ lessonId: req.params.lessonId });

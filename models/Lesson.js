@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const lessonSchema = new mongoose.Schema(
@@ -41,7 +42,7 @@ const lessonSchema = new mongoose.Schema(
       enum: ["Free", "Premium"],
       default: "Free",
     },
-    // likes array stores userIds who liked this lesson
+    // stores userIds who liked this lesson
     likes: {
       type: [String],
       default: [],
@@ -50,7 +51,7 @@ const lessonSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    // favoritesCount is updated whenever a user saves/removes this lesson
+    // favoritesCount update when user saves/removes this lesson
     favoritesCount: {
       type: Number,
       default: 0,
@@ -83,7 +84,7 @@ const lessonSchema = new mongoose.Schema(
   }
 );
 
-// text index for search by title/keyword (Challenge 1)
+// text index for search by title/keyword
 lessonSchema.index({ title: "text", description: "text" });
 
 const Lesson = mongoose.model("Lesson", lessonSchema);

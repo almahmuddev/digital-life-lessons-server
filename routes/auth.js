@@ -1,3 +1,4 @@
+
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -13,8 +14,8 @@ const generateToken = (userId) => {
   });
 };
 
-// ─── Register ────────────────────────────────────────────────────────────────
-// POST /auth/register
+// Register ---
+// post /auth/register
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, photoURL } = req.body;
@@ -64,8 +65,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ─── Login ───────────────────────────────────────────────────────────────────
-// POST /auth/login
+// log in --------
+// post /auth/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -82,7 +83,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Google-only users have no password
+    // Google- this type users have no password
     if (!user.password) {
       return res
         .status(401)
@@ -114,9 +115,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ─── Google OAuth ─────────────────────────────────────────────────────────────
-// POST /auth/google
-// The client sends the Google profile info after Google signs in the user
+// Google Auth
+// post /auth/google
+
+// client sends the Google profile info after Google signs in the user
 router.post("/google", async (req, res) => {
   try {
     const { name, email, photoURL, googleId } = req.body;
@@ -164,9 +166,10 @@ router.post("/google", async (req, res) => {
   }
 });
 
-// ─── Get current user ─────────────────────────────────────────────────────────
-// GET /auth/me  (protected)
-// Used on page reload to re-hydrate auth state from stored token
+// get current user -----
+// get /auth/me 
+
+// on page reload to re-hydrate auth state from stored token
 router.get("/me", verifyToken, async (req, res) => {
   try {
     res.status(200).json({
@@ -185,8 +188,8 @@ router.get("/me", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Update profile ───────────────────────────────────────────────────────────
-// PATCH /auth/profile  (protected)
+// Update Profile ------
+// patch /auth/profile 
 router.patch("/profile", verifyToken, async (req, res) => {
   try {
     const { name, photoURL } = req.body;

@@ -6,13 +6,13 @@ import { verifyToken, verifyAdmin } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// ─── Create lesson ────────────────────────────────────────────────────────────
-// POST /lessons
+// Create lesson ------
+// post /lessons
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { title, description, category, emotionalTone, imageURL, visibility, accessLevel } = req.body;
 
-    // Free users cannot create Premium lessons — enforce server-side
+    // Free users cannot create Premium lessons ----
     const resolvedAccessLevel =
       req.user.isPremium ? (accessLevel || "Free") : "Free";
 
@@ -36,10 +36,9 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Get all PUBLIC lessons (with filter/sort/search/pagination) ───────────────
+// Get all public lessons (with filter/sort/search/pagination) ---
 // GET /lessons/public
-// Challenge 1: filter by category, emotionalTone; sort; search by keyword
-// Challenge 3: pagination
+
 router.get("/public", async (req, res) => {
   try {
     const {
@@ -82,8 +81,8 @@ router.get("/public", async (req, res) => {
   }
 });
 
-// ─── Get featured lessons (for home page) ─────────────────────────────────────
-// GET /lessons/featured
+// featured lessons (for home page) ---
+// get /lessons/featured
 router.get("/featured", async (req, res) => {
   try {
     const lessons = await Lesson.find({
@@ -99,8 +98,8 @@ router.get("/featured", async (req, res) => {
   }
 });
 
-// ─── Get most saved lessons (home page dynamic section) ───────────────────────
-// GET /lessons/most-saved
+// most saved lessons (home page dynamic section) ----
+// get /lessons/most-saved
 router.get("/most-saved", async (req, res) => {
   try {
     const lessons = await Lesson.find({ visibility: "Public" })
@@ -113,8 +112,8 @@ router.get("/most-saved", async (req, res) => {
   }
 });
 
-// ─── Top contributors of the week (home page dynamic section) ─────────────────
-// GET /lessons/top-contributors
+// Top contributors of the week (home page dynamic section) ----
+// get /lessons/top-contributors
 router.get("/top-contributors", async (req, res) => {
   try {
     // lessons created in the last 7 days
@@ -145,8 +144,8 @@ router.get("/top-contributors", async (req, res) => {
   }
 });
 
-// ─── Get lessons by a specific creator (for author profile) ───────────────────
-// GET /lessons/by-creator/:creatorId
+// ─── Get lessons by a specific creator - author profile -- 
+// get /lessons/by-creator/:creatorId
 router.get("/by-creator/:creatorId", async (req, res) => {
   try {
     const lessons = await Lesson.find({
@@ -160,8 +159,8 @@ router.get("/by-creator/:creatorId", async (req, res) => {
   }
 });
 
-// ─── Get MY lessons (private route) ───────────────────────────────────────────
-// GET /lessons/my
+// Get MY lessons (private route) ---
+// get /lessons/my
 router.get("/my", verifyToken, async (req, res) => {
   try {
     const lessons = await Lesson.find({ creatorId: req.user._id }).sort({
@@ -173,8 +172,8 @@ router.get("/my", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Get single lesson by ID ──────────────────────────────────────────────────
-// GET /lessons/:id
+// Get single lesson by ID ----
+// get /lessons/:id
 router.get("/:id", verifyToken, async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
@@ -183,7 +182,7 @@ router.get("/:id", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Lesson not found" });
     }
 
-    // Premium lesson guard: only premium users or the creator can see it
+    // Premium lesson - only premium users or the creator can see it
     const isOwner = lesson.creatorId.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
 
@@ -200,8 +199,8 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Update lesson ────────────────────────────────────────────────────────────
-// PATCH /lessons/:id
+// Update lesson ---
+// patch /lessons/:id
 router.patch("/:id", verifyToken, async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
@@ -232,8 +231,8 @@ router.patch("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Delete lesson ────────────────────────────────────────────────────────────
-// DELETE /lessons/:id
+// Delete lesson -----
+// delete /lessons/:id
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
@@ -257,8 +256,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Toggle like ──────────────────────────────────────────────────────────────
-// PATCH /lessons/:id/like
+// toggle like  -----
+// patch /lessons/:id/like
 router.patch("/:id/like", verifyToken, async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
@@ -288,8 +287,8 @@ router.patch("/:id/like", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Toggle visibility (Public / Private) ────────────────────────────────────
-// PATCH /lessons/:id/visibility
+// toggle visibility (Public / Private) 
+// patch /lessons/:id/visibility
 router.patch("/:id/visibility", verifyToken, async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);

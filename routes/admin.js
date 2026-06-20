@@ -1,3 +1,4 @@
+
 import express from "express";
 import User from "../models/User.js";
 import Lesson from "../models/Lesson.js";
@@ -6,11 +7,11 @@ import { verifyToken, verifyAdmin } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// all admin routes require verifyToken + verifyAdmin
+// all admin routes require verifytoken + verifyadmin
 router.use(verifyToken, verifyAdmin);
 
-// ─── Platform stats ───────────────────────────────────────────────────────────
-// GET /admin/stats
+
+// get /admin/stats
 router.get("/stats", async (req, res) => {
   try {
     const today = new Date();
@@ -69,8 +70,8 @@ router.get("/stats", async (req, res) => {
   }
 });
 
-// ─── Get all users ────────────────────────────────────────────────────────────
-// GET /admin/users
+// Get all users ---
+// get /admin/users
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -89,8 +90,8 @@ router.get("/users", async (req, res) => {
   }
 });
 
-// ─── Update user role ─────────────────────────────────────────────────────────
-// PATCH /admin/users/:userId/role
+//  Update user role ---
+// patch /admin/users/:userId/role
 router.patch("/users/:userId/role", async (req, res) => {
   try {
     const { role } = req.body;
@@ -113,8 +114,8 @@ router.patch("/users/:userId/role", async (req, res) => {
   }
 });
 
-// ─── Delete user ──────────────────────────────────────────────────────────────
-// DELETE /admin/users/:userId
+// delete user ----
+// delete /admin/users/:userId
 router.delete("/users/:userId", async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.userId);
@@ -125,8 +126,8 @@ router.delete("/users/:userId", async (req, res) => {
   }
 });
 
-// ─── Get ALL lessons (admin view) ─────────────────────────────────────────────
-// GET /admin/lessons
+// admin see ( all lesson ) ----
+// get /admin/lessons
 router.get("/lessons", async (req, res) => {
   try {
     const { category, visibility, flagged } = req.query;
@@ -137,7 +138,6 @@ router.get("/lessons", async (req, res) => {
 
     const lessons = await Lesson.find(query).sort({ createdAt: -1 });
 
-    // if flagged=true, filter to only lessons that have reports
     if (flagged === "true") {
       const reportedIds = await LessonReport.distinct("lessonId");
       const flaggedLessons = lessons.filter((l) =>
@@ -152,8 +152,8 @@ router.get("/lessons", async (req, res) => {
   }
 });
 
-// ─── Toggle featured on a lesson ─────────────────────────────────────────────
-// PATCH /admin/lessons/:id/feature
+// Toggle featured on a lesson ----
+// patch /admin/lessons/:id/feature
 router.patch("/lessons/:id/feature", async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
@@ -171,8 +171,8 @@ router.patch("/lessons/:id/feature", async (req, res) => {
   }
 });
 
-// ─── Mark lesson as reviewed ──────────────────────────────────────────────────
-// PATCH /admin/lessons/:id/review
+// Mark lesson as reviewed ----
+// patch /admin/lessons/:id/review
 router.patch("/lessons/:id/review", async (req, res) => {
   try {
     const lesson = await Lesson.findByIdAndUpdate(
@@ -186,8 +186,8 @@ router.patch("/lessons/:id/review", async (req, res) => {
   }
 });
 
-// ─── Delete lesson (admin) ────────────────────────────────────────────────────
-// DELETE /admin/lessons/:id
+// admin Delete lesson ----
+// delete /admin/lessons/:id
 router.delete("/lessons/:id", async (req, res) => {
   try {
     await Lesson.findByIdAndDelete(req.params.id);

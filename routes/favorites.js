@@ -1,3 +1,4 @@
+
 import express from "express";
 import Favorite from "../models/Favorite.js";
 import Lesson from "../models/Lesson.js";
@@ -5,8 +6,8 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// ─── Save lesson to favorites ─────────────────────────────────────────────────
-// POST /favorites
+// Save lesson to favorites 
+// post /favorites
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { lessonId } = req.body;
@@ -33,8 +34,8 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Remove lesson from favorites ─────────────────────────────────────────────
-// DELETE /favorites/:lessonId
+// Remove lesson from favorites -----
+// delete /favorites/:lessonId
 router.delete("/:lessonId", verifyToken, async (req, res) => {
   try {
     const deleted = await Favorite.findOneAndDelete({
@@ -57,8 +58,8 @@ router.delete("/:lessonId", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Get my favorites ─────────────────────────────────────────────────────────
-// GET /favorites/my
+// Get my favorites -----
+// get /favorites/my
 router.get("/my", verifyToken, async (req, res) => {
   try {
     const { category, emotionalTone } = req.query;
@@ -67,10 +68,10 @@ router.get("/my", verifyToken, async (req, res) => {
       .sort({ savedAt: -1 })
       .populate("lessonId");
 
-    // filter by category/tone if provided
+    // filter by category if provided
     let lessons = favorites
       .map((f) => f.lessonId)
-      .filter(Boolean); // remove null if lesson was deleted
+      .filter(Boolean); // remove null if lesson deleted
 
     if (category) lessons = lessons.filter((l) => l.category === category);
     if (emotionalTone) lessons = lessons.filter((l) => l.emotionalTone === emotionalTone);
@@ -81,8 +82,8 @@ router.get("/my", verifyToken, async (req, res) => {
   }
 });
 
-// ─── Check if a lesson is saved by current user ───────────────────────────────
-// GET /favorites/check/:lessonId
+// check if a lesson is saved by current user ---
+// get /favorites/check/:lessonId
 router.get("/check/:lessonId", verifyToken, async (req, res) => {
   try {
     const fav = await Favorite.findOne({

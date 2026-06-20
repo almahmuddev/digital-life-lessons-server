@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-// verifyToken — attaches req.user if token is valid
+// verifyToken — with token validation
+
 const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -26,7 +27,7 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-// verifyAdmin — must be used AFTER verifyToken
+// verifyadmin — used after verify token
 const verifyAdmin = (req, res, next) => {
   if (req.user?.role !== "admin") {
     return res.status(403).json({ message: "Forbidden: Admins only" });
