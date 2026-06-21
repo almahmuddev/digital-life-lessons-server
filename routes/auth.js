@@ -217,4 +217,23 @@ router.patch("/profile", verifyToken, async (req, res) => {
   }
 });
 
+// Get public profile by ID ----
+
+router.get("/profile/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select(
+      "name photoURL isPremium role createdAt"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 export default router;
